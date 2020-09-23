@@ -1,0 +1,18 @@
+{% extends "ProductPages/base.html" %} {% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <form method="POST">
+                {% csrf_token %} {{ form.as_p }}
+                <br>
+                <br>
+                <a class="btn btn-outline-secondary" href="{% url 'Product:product-list' %}">&#8592; Back</a>
+                <button class="btn btn-outline-info" style="color: red" type="submit">Register</button>
+            </form>
+
+            <p style="margin-top: 5%; font-size: 75%;">If you have already account. <a href="{% url 'Product:login-request' %}"><strong>Login</strong></a></p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

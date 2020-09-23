@@ -1,0 +1,16 @@
+{% extends "ProductPages/base.html" %} {% block content %}
+<div class="row justify-content-center" style="margin-top: 17%; margin-bottom: 17%;">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <form action="." method="POST">
+                {% csrf_token %} Do you really want to delete this "{{ product }}" product ?
+                <br>
+                <br>
+                <a class="btn btn-outline-secondary" href="{% url 'Product:product-detail' product.id %}">&#8592; Back</a>
+                <button class="btn btn-outline-info" style="color: red" type="submit">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,87 @@
+ {% extends 'ProductPages/base.html' %} {% load static %} {% block detail %}
+
+<div id="content-wrapper" style="margin-top: 5%; margin-bottom: 7%;">
+    <div class="column">
+        <img id=featured src="{{ product.imageURL }}">
+        <div id="slide-wrapper">
+            {% if product.productimage_set.all %}
+            <img id="slideLeft" class="arrow" src="{% static 'images/arrow-left.png' %}">
+
+
+
+
+
+            <div id="slider">
+                <img class="thumbnailslider active" src="{{ product.imageURL}}"> {% for imagelist in product.productimage_set.all %}
+                <img class="thumbnailslider" src="{{ imagelist.imageURL }}"> {% endfor %}
+            </div>
+
+            <img id="slideRight" class="arrow" src="{% static 'images/arrow-right.png' %}"> {% endif %}
+        </div>
+    </div>
+
+    <div class="column">
+        <h1>{{ product.name }}</h1>
+        <hr> {% if product.currency == '$' %}
+        <h4><strong>{{product.currency}}{{ product.price }}</strong></h4>
+        {% elif product.currency == 'euro' %}
+        <h4><strong>&#8364; {{ product.price }}</strong></h4>
+        {% elif product.currency == 'ruble' %}
+        <h4><strong>{{ product.price }} &#8381;</strong></h4>
+        {% else %}
+        <h4><strong>{{ product.price }} {{product.currency}}</strong></h4>
+        {% endif %}
+
+        <p>{{ product.description|safe }}</p>
+        {% if user.is_staff %}
+        <div style=" margin-top: auto; margin-bottom: 0%;">
+            <p>
+                <a style="margin-right: 5%;" href="{% url 'Product:product-list' %}" class="btn btn-outline-dark">&#8592; Back</a>
+                <a href="{% url 'Product:product-delete' product.id %}" class="btn btn-outline-danger">Delete</a>
+                <a href="{% url 'Product:product-update' product.id %}" class="btn btn-outline-info">Update</a>
+            </p>
+            {% else %}
+            <input value=1 type="number ">
+            <a class="btn btn-dark " href="# " style="margin-left: 2%;">Add to Cart</a>
+
+        </div> {% endif %}
+    </div>
+</div>
+
+
+<script type="text/javascript ">
+    let thumbnailsliders = document.getElementsByClassName('thumbnailslider')
+    let activeImages = document.getElementsByClassName('active')
+    for (var i = 0; i < thumbnailsliders.length; i++) {
+        thumbnailsliders[i].addEventListener('mouseover', function() {
+
+            if (activeImages.length > 0) {
+                activeImages[0].classList.remove('active')
+            }
+
+            this.classList.add('active')
+            document.getElementById('featured').src = this.src
+        })
+
+
+    }
+
+    const buttonRight = document.getElementById('slideRight');
+    const buttonLeft = document.getElementById('slideLeft');
+
+
+    buttonRight.addEventListener('click', function() {
+        document.getElementById('slider').scrollLeft += 180;
+    })
+
+
+
+    buttonLeft.addEventListener('click', function() {
+        document.getElementById('slider').scrollLeft -= 180;
+    })
+</script>
+{% endblock detail %}
+<p>
+    <a style="margin-top: 5%;" href="{% url 'Product:product-list' %}" class="btn btn-outline-dark">&#8592; Back</a>
+
+</p>

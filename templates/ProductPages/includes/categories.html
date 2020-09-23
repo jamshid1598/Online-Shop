@@ -1,0 +1,13 @@
+<div class="row">
+    {% for category in object_list_c %}
+    <div class="col-lg-2">
+        <a class="btn" href="{% url 'Product:product-list' category.id %}">
+            <div class="box-element product ">
+                <h6><strong>{{category.name}}</strong></h6>
+                <hr>
+                <p style="font-size: 70% ">Maxsulot miqdori: 100</p>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,23 @@
+{% extends "ProductPages/base.html" %} {% block content %}
+
+<br>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card-body">
+            {% if form.is_multipart %}
+            <form enctype="multipart/form-data" method="POST" action=".">
+                {% else %}
+                <form method="POST" action=".">
+                    {% endif %} {% csrf_token %}{{ form.as_p }}
+                    <p>
+
+                        <button type="reset" class="btn btn-outline-warning" style="color: red">Clear</button>
+                        <button class="btn btn-outline-success" style="color: red;" type="submit">Save</button>
+                    </p>
+
+                </form>
+                <a class="btn btn-outline-dark" href="{% url 'Product:product-list' %}">&#8592; Back</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
