@@ -73,7 +73,7 @@ INSTALLED_APPS = [
 
     # 3rd party apps
     'tinymce',
-    'rest_framework',
+    # 'rest_framework',
 
     # local apps
     'Product.apps.ProductConfig',
