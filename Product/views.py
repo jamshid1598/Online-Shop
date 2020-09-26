@@ -43,7 +43,7 @@ from .models import (
 
 # << -------------------  AuthenticationForm Function ------------------------>
 @csrf_protect
-@unauthenticated_user
+# @unauthenticated_user
 def register_request(request):
 	if request.method == "POST":
 		form = RegisterForm(request.POST or None)
@@ -76,7 +76,7 @@ def register_request(request):
 	)
 
 
-@unauthenticated_user
+# @unauthenticated_user
 def login_request(request):
 	if request.method == 'POST':
 		form=LoginForm(request.POST or None)

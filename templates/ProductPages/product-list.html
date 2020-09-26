@@ -15,7 +15,7 @@
             <hr>
             <p style="font-size: 70%">Published at: {{ product.published_at|date:"F j, Y" }}</p>
             {% if user.is_staff %}
-            <a href="{% url 'Product:product-update' product.id %}" data-product="" data-action="extra-option" class="btn btn-outline-secondary add-btn extra-option-cart">Extra Option</a> {% else %}
+            <a href="{% url 'Product:product-update' product.id %}" data-product="" data-action="extra-option" class="btn btn-outline-secondary add-btn extra-option-cart">Update</a> {% else %}
             <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button> {% endif %}
 
 
