@@ -273,7 +273,7 @@ class Product_Update_View(ProductObjectMixin, View):
 			if form.is_valid():
 				form.save()
 			# form=ProductCreate()
-			# return HttpResponseRedirect(reverse('Product:product-detail', args=(product.id)))
+			
 		self.context={ 'form' : form, 'id':id}
 		return render(
 			request,
