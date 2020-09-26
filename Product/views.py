@@ -14,6 +14,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 # from .decorators import unauthenticated_user, allowed_users, admin_only
 
+# Class Based Views
 from django.views.generic import (
 	ListView,
 	DetailView,
