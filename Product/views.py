@@ -8,11 +8,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 
 from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse 
-from django.contrib.admin.views.decorators import staff_member_required
 
-from django.contrib.auth.decorators import login_required
-# from .decorators import unauthenticated_user, allowed_users, admin_only
 
 # Class Based Views
 from django.views.generic import (
@@ -25,11 +21,6 @@ from django.views.generic import (
 
 
 from .forms import (
-	# NewUserForm,
-	LoginForm,
-	RegisterForm,
-	ContactForm,
-
 	CategoryCreate,
 	ProductCreate,
 )
@@ -42,101 +33,7 @@ from .models import (
 
 
 
-# << -------------------  AuthenticationForm Function ------------------------>
-@csrf_protect
-# @unauthenticated_user
-def register_request(request):
-	if request.method == "POST":
-		form = RegisterForm(request.POST or None)
-		if form.is_valid():
-			user = form.save()
-			username = form.cleaned_data.get('username')
-			messages.success(request, "New account created: {}".format(username))
-			login(request, user)
-			messages.info(request, "You are now loged in {}".format(username))
-			return redirect("Product:product-list")
-		else:
-			for msg in form.errors:
-				messages.error(request, f"{msg}: {form.errors[msg]}")
-
-			return render(
-				request,
-				"Pages/register.html",
-				context={
-					'form' : form
-				}
-			)
-
-	form = RegisterForm
-	return render(
-		request,
-		"Pages/register.html",
-		context={
-			'form' : form
-		}
-	)
-
-
-# @unauthenticated_user
-def login_request(request):
-	if request.method == 'POST':
-		form=LoginForm(request.POST or None)
-		if form.is_valid():
-			username = form.cleaned_data.get('username')
-			password = form.cleaned_data.get('password')
-			user = authenticate(username=username, password=password)
-			if user is not None:
-				login(request, user)
-				messages.info(request, "you are now logged in as {}".format(username))
-				return redirect("Products:product-list")
-			else:
-				messages.error(request, "invaled username or password")
-		else:
-			messages.error(request, "invaled username or password")
-
-	form = LoginForm()
-	return render(
-			request=request,
-			template_name="Pages/login.html",
-			context={
-				'form' : form
-			}
-		)
-
-
-def logout_request(request):
-	logout(request)
-	messages.info(request, "Logged out successfully!")
-	return redirect("Products:product-list")
-
-# << -------------------  AuthenticationForm Function ------------------------>>
-
-# << -------------------  ContactForm Function ------------------------>>
-
-def contact_request(request, *args, **kwargs):
-	form = ContactForm()
-	msg=False
-	if request.method == 'POST':
-		form = ContactForm(request.POST or None)
-		if form.is_valid():
-			subject = f'Message from {form.cleaned_data["name"]}'
-			message = form.cleaned_data["message"]
-			sender = form.cleaned_data["email"]
-			recipients = ['dovurovjamshid95@gmail.com']
-			try:
-				send_mail(subject, message, sender, recipients, fail_silently=True)
-				msg=True
-			except BadHeaderError:
-				return HttpResponse('Invalid header found')
-            # return HttpResponse('Success...Your email has been sent')
-	form = ContactForm()
-	return render(
-		request=request, 
-		template_name="Pages/contact.html", 
-		context={'form': form, 'msg':msg}
-	)
-
-# << -------------------  ContactForm Function ------------------------>>
+# # << -------------------  ContactForm Function ------------------------>>
 
 # <-------------- class based Product-List view -------------->
 class Product_List_View(View):
@@ -147,31 +44,41 @@ class Product_List_View(View):
 	look_up='id'
 	def get_object(self):
 		id=self.kwargs.get(self.look_up)
+		
+		queryset_products = Category.objects.all()
+		queryset_category = Product.objects.all()
+
 		if id is not None:
-			product_category=get_object_or_404(self.model, id=id)
-			print(product_category)
-			queryset=product_category.product_name.all()
-			return queryset
-		elif len(Product.objects.all()) > 20:
-			queryset_c=Category.objects.all()
-			queryset_p=Product.objects.order_by('-published_at')[:21]
-			return queryset_p, queryset_c
-		else:
-			queryset_c=Category.objects.all()
-			queryset_p=Product.objects.all()
-			return queryset_p, queryset_c
+			queryset_category = get_object_or_404(self.model, id=id)
+			queryset_products = queryset_category.product_name.all()
+			print(id, queryset_products, queryset_category)
+			# return queryset_products
+		# elif len(Product.objects.all()) > 20:
+		# 	queryset_c=Category.objects.all()
+		# 	queryset_p=Product.objects.order_by('-published_at')[:21]
+		# 	return queryset_p, queryset_c
+		# else:
+		# 	queryset_category = Category.objects.all()
+		# 	queryset_products = Product.objects.all()
+
+		return queryset_category, queryset_products
+
+
 
 	def get(self, request, id=None, *args, **kwargs):
-		object_list=None
-		object_list_c=None
+		
+		product_object_list  = None
+		category_object_list = None
+
 		if id is not None:
-			object_list=self.get_object()
-			self.context['object_list'] = object_list
-			self.context['quantity'] = len(object_list)
+			category_object_list, product_object_list=self.get_object()
+			self.context['product_object_list'] = product_object_list
+			# self.context['category_object_list'] = category_object_list
+			# self.context['quantity'] = len(object_list)
 		else:
-			object_list, object_list_c =self.get_object()
-			self.context['object_list'] = object_list
-			self.context['object_list_c'] = object_list_c
+			category_object_list, product_object_list =self.get_object()
+			self.context['product_object_list'] = product_object_list
+			self.context['category_object_list'] = category_object_list
 		return render(
             request,
             self.template_name,
@@ -180,26 +87,26 @@ class Product_List_View(View):
 # <-------------- class based Product-List view -------------->
 
 # <-------------- class based Product-Category-List view -------------->
-class Category_Product_List_View(View):
-	template_name='ProductPages/product-list.html'
-	context={}
-	model=Category
-	look_up='id'
-	def get_object(self):
-		id=self.kwargs.get(self.look_up)
-		product_category=get_object_or_404(self.model, id=id)
-		print(product_category)
-		queryset=product_category.product_name.all()
-		return queryset
-	def get(self, request, id=None, *args, **kwargs):
-		object_list=self.get_object()
-		self.context['object_list'] = object_list
-		self.context['quantity'] = len(object_list)
-		return render(
-            request,
-            self.template_name,
-            self.context
-        )
+# class Category_Product_List_View(View):
+# 	template_name='ProductPages/product-list.html'
+# 	context={}
+# 	model=Category
+# 	look_up='id'
+# 	def get_object(self):
+# 		id=self.kwargs.get(self.look_up)
+# 		product_category=get_object_or_404(self.model, id=id)
+# 		print(product_category)
+# 		queryset=product_category.product_name.all()
+# 		return queryset
+# 	def get(self, request, id=None, *args, **kwargs):
+# 		object_list=self.get_object()
+# 		self.context['object_list'] = object_list
+# 		self.context['quantity'] = len(object_list)
+# 		return render(
+#             request,
+#             self.template_name,
+#             self.context
+#         )
 # <-------------- class based Product-Category-List view -------------->
 
 

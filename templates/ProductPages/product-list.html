@@ -4,7 +4,7 @@
     <br> {% include "ProductPages/includes/categories.html" %}
 </div>
 <div class="row" style="margin-top: 5%;">
-    {% for product in object_list %}
+    {% for product in product_object_list %}
     <div class="col-lg-4">
         {% if product.image %}
         <img class="thumbnail" src="{{ product.image.url }}"> {% else %}

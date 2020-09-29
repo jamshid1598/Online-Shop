@@ -6,7 +6,7 @@
         <div class="card card-body">
             <form method="POST">
                 {% csrf_token %} {{ form.as_p }}
-                <a style="margin-top: 1%; font-size: 75%;" href="{% url 'Products:password_reset' %}">Forget Password</a>
+                <a style="margin-top: 1%; font-size: 75%;" href="{% url 'Auth:password_reset' %}">Forget Password</a>
                 <br>
                 <br>
                 <br>
@@ -15,7 +15,7 @@
             </form>
             <br>
             <p style=" font-size: 75%;">If you don't have already account.
-                <a href="{% url 'Products:register-request' %}">
+                <a href="{% url 'Auth:register-request' %}">
                     <strong>Regiter</strong>
                 </a> for one.
             </p>
