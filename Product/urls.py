@@ -17,7 +17,7 @@ from .views import (
 
     )
 
-app_name='Product'
+app_name='Products'
 
 urlpatterns = [
     # Product viewes' urls

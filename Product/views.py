@@ -88,7 +88,7 @@ def login_request(request):
 			if user is not None:
 				login(request, user)
 				messages.info(request, "you are now logged in as {}".format(username))
-				return redirect("Product:product-list")
+				return redirect("Products:product-list")
 			else:
 				messages.error(request, "invaled username or password")
 		else:
@@ -107,7 +107,7 @@ def login_request(request):
 def logout_request(request):
 	logout(request)
 	messages.info(request, "Logged out successfully!")
-	return redirect("Product:product-list")
+	return redirect("Products:product-list")
 
 # << -------------------  AuthenticationForm Function ------------------------>>
 
@@ -245,15 +245,16 @@ class Product_Create_View(View):
 			if form.is_valid():
 				form.save()
 				form=ProductCreate()
-		else:
-			form=ProductCreate()
+				return get_success_url()
+		# else:
+		# 	form=ProductCreate()
 		self.context={ 'form' : form }
 		return render(
 			request,
 			self.template_name,
 			self.context,
 		)
-
+	
 
 class Product_Update_View(ProductObjectMixin, View):
 	template_name='ProductPages/product-update.html'
@@ -273,6 +274,7 @@ class Product_Update_View(ProductObjectMixin, View):
 			form=ProductCreate(request.POST, request.FILES, instance=product)
 			if form.is_valid():
 				form.save()
+				return redirect('Products:product-detail', id)
 			# form=ProductCreate()
 			
 		self.context={ 'form' : form, 'id':id}
@@ -281,7 +283,6 @@ class Product_Update_View(ProductObjectMixin, View):
 			self.template_name,
 			self.context,
 		)
-
 
 
 class Product_Delete_View(ProductObjectMixin, View):
@@ -303,7 +304,7 @@ class Product_Delete_View(ProductObjectMixin, View):
         if obj is not None:
             obj.delete()
             context['product']=None
-            return redirect("Product:product-list")
+            return redirect("Products:product-list")
         return render(
             request,
             self.template_name,

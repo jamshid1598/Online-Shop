@@ -6,7 +6,7 @@
                 {% csrf_token %} Do you really want to delete this "{{ product }}" product ?
                 <br>
                 <br>
-                <a class="btn btn-outline-secondary" href="{% url 'Product:product-detail' product.id %}">&#8592; Back</a>
+                <a class="btn btn-outline-secondary" href="{% url 'Products:product-detail' product.id %}">&#8592; Back</a>
                 <button class="btn btn-outline-info" style="color: red" type="submit">Delete</button>
             </form>
         </div>

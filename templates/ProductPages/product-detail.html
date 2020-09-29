@@ -1,22 +1,22 @@
- {% extends 'ProductPages/base.html' %} {% load static %} {% block detail %}
+ {% extends 'ProductPages/base.html' %} 
+ {% load static %} 
+ {% block detail %}
 
 <div id="content-wrapper" style="margin-top: 5%; margin-bottom: 7%;">
     <div class="column">
         <img id=featured src="{{ product.imageURL }}">
         <div id="slide-wrapper">
             {% if product.productimage_set.all %}
-            <img id="slideLeft" class="arrow" src="{% static 'images/arrow-left.png' %}">
+                <img id="slideLeft" class="arrow" src="{% static 'images/arrow-left.png' %}">
+                <div id="slider">
+                    <img class="thumbnailslider active" src="{{ product.imageURL}}"> 
+                    {% for imagelist in product.productimage_set.all %}
+                        <img class="thumbnailslider" src="{{ imagelist.imageURL }}"> 
+                    {% endfor %}
+                </div>
 
-
-
-
-
-            <div id="slider">
-                <img class="thumbnailslider active" src="{{ product.imageURL}}"> {% for imagelist in product.productimage_set.all %}
-                <img class="thumbnailslider" src="{{ imagelist.imageURL }}"> {% endfor %}
-            </div>
-
-            <img id="slideRight" class="arrow" src="{% static 'images/arrow-right.png' %}"> {% endif %}
+                <img id="slideRight" class="arrow" src="{% static 'images/arrow-right.png' %}"> 
+            {% endif %}
         </div>
     </div>
 
@@ -36,9 +36,9 @@
         {% if user.is_staff %}
         <div style=" margin-top: auto; margin-bottom: 0%;">
             <p>
-                <a style="margin-right: 5%;" href="{% url 'Product:product-list' %}" class="btn btn-outline-dark">&#8592; Back</a>
-                <a href="{% url 'Product:product-delete' product.id %}" class="btn btn-outline-danger">Delete</a>
-                <a href="{% url 'Product:product-update' product.id %}" class="btn btn-outline-info">Update</a>
+                <a style="margin-right: 5%;" href="{% url 'Products:product-list' %}" class="btn btn-outline-dark">&#8592; Back</a>
+                <a href="{% url 'Products:product-delete' product.id %}" class="btn btn-outline-danger">Delete</a>
+                <a href="{% url 'Products:product-update' product.id %}" class="btn btn-outline-info">Update</a>
             </p>
             {% else %}
             <input value=1 type="number ">
