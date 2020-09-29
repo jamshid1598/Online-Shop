@@ -45,25 +45,14 @@ class Product_List_View(View):
 	def get_object(self):
 		id=self.kwargs.get(self.look_up)
 		
-		queryset_products = Category.objects.all()
-		queryset_category = Product.objects.all()
+		queryset_products = Product.objects.all()
+		queryset_category = Category.objects.all()
 
 		if id is not None:
 			queryset_category = get_object_or_404(self.model, id=id)
 			queryset_products = queryset_category.product_name.all()
-			print(id, queryset_products, queryset_category)
-			# return queryset_products
-		# elif len(Product.objects.all()) > 20:
-		# 	queryset_c=Category.objects.all()
-		# 	queryset_p=Product.objects.order_by('-published_at')[:21]
-		# 	return queryset_p, queryset_c
-		# else:
-		# 	queryset_category = Category.objects.all()
-		# 	queryset_products = Product.objects.all()
 
 		return queryset_category, queryset_products
-
-
 
 	def get(self, request, id=None, *args, **kwargs):
 		
@@ -71,10 +60,8 @@ class Product_List_View(View):
 		category_object_list = None
 
 		if id is not None:
-			category_object_list, product_object_list=self.get_object()
-			self.context['product_object_list'] = product_object_list
-			# self.context['category_object_list'] = category_object_list
-			# self.context['quantity'] = len(object_list)
+			category_object_list, product_object_list = self.get_object()
+			self.context['product_object_list']       = product_object_list
 		else:
 			category_object_list, product_object_list =self.get_object()
 			self.context['product_object_list'] = product_object_list
@@ -84,31 +71,6 @@ class Product_List_View(View):
             self.template_name,
             self.context
         )
-# <-------------- class based Product-List view -------------->
-
-# <-------------- class based Product-Category-List view -------------->
-# class Category_Product_List_View(View):
-# 	template_name='ProductPages/product-list.html'
-# 	context={}
-# 	model=Category
-# 	look_up='id'
-# 	def get_object(self):
-# 		id=self.kwargs.get(self.look_up)
-# 		product_category=get_object_or_404(self.model, id=id)
-# 		print(product_category)
-# 		queryset=product_category.product_name.all()
-# 		return queryset
-# 	def get(self, request, id=None, *args, **kwargs):
-# 		object_list=self.get_object()
-# 		self.context['object_list'] = object_list
-# 		self.context['quantity'] = len(object_list)
-# 		return render(
-#             request,
-#             self.template_name,
-#             self.context
-#         )
-# <-------------- class based Product-Category-List view -------------->
-
 
 class ProductObjectMixin(object):
     model=Product
