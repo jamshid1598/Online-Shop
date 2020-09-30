@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.views import View
+from django.core.paginator import Paginator
 
 # from django.contrib.auth.forms import  AuthenticationForm  # Now we can use 'LoginForm' instead of 'AuthenticationForm'
 from django.views.decorators.csrf import csrf_protect
@@ -8,7 +9,6 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 
 from django.core.mail import send_mail, BadHeaderError
-
 
 # Class Based Views
 from django.views.generic import (
@@ -18,7 +18,6 @@ from django.views.generic import (
 	UpdateView,
 	DeleteView,
 )
-
 
 from .forms import (
 	CategoryCreate,
@@ -45,32 +44,39 @@ class Product_List_View(View):
 	def get_object(self):
 		id=self.kwargs.get(self.look_up)
 		
-		queryset_products = Product.objects.all()
-		queryset_category = Category.objects.all()
+		queryset_products_list = Product.objects.all()
+		queryset_category_list = Category.objects.all()
 
 		if id is not None:
-			queryset_category = get_object_or_404(self.model, id=id)
-			queryset_products = queryset_category.product_name.all()
+			queryset_category		  = get_object_or_404(self.model, id=id)
+			queryset_products_list	  = queryset_category.product_name.all()
 
-		return queryset_category, queryset_products
+		return queryset_category_list, queryset_products_list
 
 	def get(self, request, id=None, *args, **kwargs):
 		
 		product_object_list  = None
 		category_object_list = None
+	
+		category_object_list, product_list = self.get_object()
 
-		if id is not None:
-			category_object_list, product_object_list = self.get_object()
-			self.context['product_object_list']       = product_object_list
-		else:
-			category_object_list, product_object_list =self.get_object()
-			self.context['product_object_list'] = product_object_list
-			self.context['category_object_list'] = category_object_list
+		paginator     = Paginator(product_list, 9)
+		page_num      = paginator.num_pages
+		page_indexes  = [x for x in range(1, page_num + 1)]
+	
+		page_number 		= request.GET.get('page')
+		product_object_list = paginator.get_page(page_number)
+
+		self.context['product_object_list']  = product_object_list
+		self.context['category_object_list'] = category_object_list
+		self.context['page_indexes']		 = page_indexes
+		
 		return render(
             request,
             self.template_name,
             self.context
         )
+
 
 class ProductObjectMixin(object):
     model=Product
