@@ -1,7 +1,7 @@
 <div class="row">
-    {% for category in object_list_c %}
+    {% for category in category_object_list %}
     <div class="col-lg-2">
-        <a class="btn" href="{% url 'Product:product-list' category.id %}">
+        <a class="btn" href="{% url 'Products:product-list' category.id %}">
             <div class="box-element product ">
                 <h6><strong>{{category.name}}</strong></h6>
                 <hr>

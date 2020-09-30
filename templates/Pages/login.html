@@ -6,16 +6,16 @@
         <div class="card card-body">
             <form method="POST">
                 {% csrf_token %} {{ form.as_p }}
-                <a style="margin-top: 1%; font-size: 75%;" href="{% url 'Product:password_reset' %}">Forget Password</a>
+                <a style="margin-top: 1%; font-size: 75%;" href="{% url 'Auth:password_reset' %}">Forget Password</a>
                 <br>
                 <br>
                 <br>
-                <a class="btn btn-outline-secondary" href="{% url 'Product:product-list' %}">&#8592; Back</a>
+                <a class="btn btn-outline-secondary" href="{% url 'Products:product-list' %}">&#8592; Back</a>
                 <button class="btn btn-outline-info" style="color: red" type="submit">Login</button>
             </form>
             <br>
             <p style=" font-size: 75%;">If you don't have already account.
-                <a href="{% url 'Product:register-request' %}">
+                <a href="{% url 'Auth:register-request' %}">
                     <strong>Regiter</strong>
                 </a> for one.
             </p>

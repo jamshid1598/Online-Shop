@@ -1,0 +1,19 @@
+Model fields                          = 1128
+Form fields                           = 1051
+Form Validation                       = 
+Django URl system (id, pk, slug ets.) = 
+Widgets                               = 1093
+File handling                         = 1043
+Django Exceptions                     = 1039
+Migration Operations                  = 1120
+Signals                               = 1361
+Templates                             = 1369
+Validators                            = 1461
+Built-in Views                        = 1466
+
+
+
+
+
+Cross Site Request Forgery protection = 989
+Settings                              = 1312

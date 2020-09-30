@@ -4,7 +4,7 @@
     <br> {% include "ProductPages/includes/categories.html" %}
 </div>
 <div class="row" style="margin-top: 5%;">
-    {% for product in object_list %}
+    {% for product in product_object_list %}
     <div class="col-lg-4">
         {% if product.image %}
         <img class="thumbnail" src="{{ product.image.url }}"> {% else %}
@@ -15,12 +15,12 @@
             <hr>
             <p style="font-size: 70%">Published at: {{ product.published_at|date:"F j, Y" }}</p>
             {% if user.is_staff %}
-            <a href="{% url 'Product:product-update' product.id %}" data-product="" data-action="extra-option" class="btn btn-outline-secondary add-btn extra-option-cart">Update</a> {% else %}
+            <a href="{% url 'Products:product-update' product.id %}" data-product="" data-action="extra-option" class="btn btn-outline-secondary add-btn extra-option-cart">Update</a> {% else %}
             <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button> {% endif %}
 
 
-            <a class="btn btn-outline-success" target="_blank" href="{% url 'Product:product-detail' product.id %}">View</a> {% if product.currency == '$' %}
-            <h4 style="display: inline-block; float: right "><strong>{{product.currency}}{{ product.price|truncatechars:"4" }}</strong></h4>
+            <a class="btn btn-outline-success" target="_blank" href="{% url 'Products:product-detail' product.id %}">View</a> {% if product.currency == '$' %}
+            <h4 style="display: inline-block; float: right "><strong>{{product.currency }}{{ product.price|truncatechars:"4" }}</strong></h4>
             {% elif product.currency == 'euro' %}
             <h4 style="display: inline-block; float: right "><strong>&#8364; {{ product.price|truncatechars:"4" }}</strong></h4>
             {% elif product.currency == 'ruble' %}

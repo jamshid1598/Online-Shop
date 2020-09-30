@@ -22,6 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('auth/', include('Pages.urls')),
     # path('', include('django.contrib.auth.urls')),
     path('tinymce/', include('tinymce.urls')),
 

@@ -1,7 +1,7 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{% url 'Product:product-list' %}">Logo</a>
+    <a class="navbar-brand" href="{% url 'Products:product-list' %}">Logo</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <h3><a class="nav-link" href="{% url 'Product:product-list' %}">Xomashyo <span class="sr-only">(current)</span></a></h3>
+                <h3><a class="nav-link" href="{% url 'Products:product-list' %}">Xomashyo <span class="sr-only">(current)</span></a></h3>
             </li>
 
         </ul>
@@ -17,11 +17,11 @@
 
             {% if user.is_staff %}
             <a href="/accounts" class="btn btn-outline-success" style="color: black;">Welcome {{ user.username }}</a>
-            <a href="{% url 'Product:logout-request' %}" class="btn btn-outline-warning" style="color: black;">Logout</a>
-            <a href="{% url 'Product:product-create' %}" class="btn btn-outline-info" style="color: black;">Create</a> {% elif user.is_authenticated %}
+            <a href="{% url 'Auth:logout-request' %}" class="btn btn-outline-warning" style="color: black;">Logout</a>
+            <a href="{% url 'Products:product-create' %}" class="btn btn-outline-info" style="color: black;">Create</a> {% elif user.is_authenticated %}
             <a href="" class="btn btn-outline-success" style="color: rgb(70, 3, 3);">Welcome {{ user.username }}</a>
-            <a href="{% url 'Product:logout-request' %}" class="btn btn-outline-warning" style="color: black;">Logout</a> {% else %}
-            <a href="{% url 'Product:login-request' %}" class="btn btn-warning" style="color: black;">Login</a> {% endif %}
+            <a href="{% url 'Auth:logout-request' %}" class="btn btn-outline-warning" style="color: black;">Logout</a> {% else %}
+            <a href="{% url 'Auth:login-request' %}" class="btn btn-warning" style="color: black;">Login</a> {% endif %}
 
             <a href="#">
                 <img id="cart-icon" src="{% static 'images/cart.png' %}">
